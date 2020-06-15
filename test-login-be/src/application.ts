@@ -1,13 +1,20 @@
+import {
+  AuthenticationComponent,
+  registerAuthenticationStrategy,
+} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {JWTServiceProvider, KEY} from './authentication-strategies';
+import {JWTAuthenticationStrategy} from './authentication-strategies/auth0';
+// import {UserdbDataSource} from './datasources';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -17,6 +24,19 @@ export class Lb4Test1Application extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+
+    this.component(AuthenticationComponent);
+
+    this.service(JWTServiceProvider);
+
+    // Register the Auth0 JWT authentication strategy
+    registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
+    this.configure(KEY).to({
+      jwksUri: 'https://apitoday.auth0.com/.well-known/jwks.json',
+      audience: 'http://localhost:3000/ping',
+      issuer: 'https://apitoday.auth0.com/',
+      algorithms: ['RS256'],
+    });
 
     // Set up the custom sequence
     this.sequence(MySequence);

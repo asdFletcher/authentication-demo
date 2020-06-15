@@ -1,5 +1,7 @@
-import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/context';
+import {get, Request, ResponseObject, RestBindings} from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 
 /**
  * OpenAPI response for ping()
@@ -10,7 +12,6 @@ const PING_RESPONSE: ResponseObject = {
     'application/json': {
       schema: {
         type: 'object',
-        title: 'PingResponse',
         properties: {
           greeting: {type: 'string'},
           date: {type: 'string'},
@@ -25,6 +26,16 @@ const PING_RESPONSE: ResponseObject = {
         },
       },
     },
+  },
+};
+
+export const UserProfileSchema = {
+  type: 'object',
+  required: ['id'],
+  properties: {
+    id: {type: 'string'},
+    email: {type: 'string'},
+    name: {type: 'string'},
   },
 };
 
@@ -48,5 +59,29 @@ export class PingController {
       url: this.req.url,
       headers: Object.assign({}, this.req.headers),
     };
+  }
+
+  @get('/greet', {
+    responses: {
+      '200': {
+        description: 'Greet the logged in user',
+        content: {
+          'application/json': {
+            schema: UserProfileSchema,
+          },
+        },
+      },
+    },
+  })
+  @authenticate('auth0-jwt', {scopes: ['greet']})
+  async greet(
+    @inject(SecurityBindings.USER)
+    currentUserProfile: UserProfile,
+  ): Promise<UserProfile> {
+    // (@jannyHou)FIXME: explore a way to generate OpenAPI schema
+    // for symbol property
+    currentUserProfile.id = currentUserProfile[securityId];
+    delete currentUserProfile[securityId];
+    return currentUserProfile;
   }
 }

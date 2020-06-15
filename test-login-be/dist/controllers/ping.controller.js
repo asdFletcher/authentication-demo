@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PingController = void 0;
+exports.PingController = exports.UserProfileSchema = void 0;
 const tslib_1 = require("tslib");
-const rest_1 = require("@loopback/rest");
+const authentication_1 = require("@loopback/authentication");
 const context_1 = require("@loopback/context");
+const rest_1 = require("@loopback/rest");
+const security_1 = require("@loopback/security");
 /**
  * OpenAPI response for ping()
  */
@@ -13,7 +15,6 @@ const PING_RESPONSE = {
         'application/json': {
             schema: {
                 type: 'object',
-                title: 'PingResponse',
                 properties: {
                     greeting: { type: 'string' },
                     date: { type: 'string' },
@@ -28,6 +29,15 @@ const PING_RESPONSE = {
                 },
             },
         },
+    },
+};
+exports.UserProfileSchema = {
+    type: 'object',
+    required: ['id'],
+    properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        name: { type: 'string' },
     },
 };
 /**
@@ -47,6 +57,13 @@ let PingController = class PingController {
             headers: Object.assign({}, this.req.headers),
         };
     }
+    async greet(currentUserProfile) {
+        // (@jannyHou)FIXME: explore a way to generate OpenAPI schema
+        // for symbol property
+        currentUserProfile.id = currentUserProfile[security_1.securityId];
+        delete currentUserProfile[security_1.securityId];
+        return currentUserProfile;
+    }
 };
 tslib_1.__decorate([
     rest_1.get('/ping', {
@@ -58,6 +75,25 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", []),
     tslib_1.__metadata("design:returntype", Object)
 ], PingController.prototype, "ping", null);
+tslib_1.__decorate([
+    rest_1.get('/greet', {
+        responses: {
+            '200': {
+                description: 'Greet the logged in user',
+                content: {
+                    'application/json': {
+                        schema: exports.UserProfileSchema,
+                    },
+                },
+            },
+        },
+    }),
+    authentication_1.authenticate('auth0-jwt', { scopes: ['greet'] }),
+    tslib_1.__param(0, context_1.inject(security_1.SecurityBindings.USER)),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], PingController.prototype, "greet", null);
 PingController = tslib_1.__decorate([
     tslib_1.__param(0, context_1.inject(rest_1.RestBindings.Http.REQUEST)),
     tslib_1.__metadata("design:paramtypes", [Object])
