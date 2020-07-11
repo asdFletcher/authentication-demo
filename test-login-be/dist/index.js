@@ -6,6 +6,7 @@ const tslib_1 = require("tslib");
 const application_1 = require("./application");
 tslib_1.__exportStar(require("./application"), exports);
 async function main(options = {}) {
+    require('dotenv').config();
     const app = new application_1.Lb4Test1Application(options);
     await app.boot();
     await app.migrateSchema();

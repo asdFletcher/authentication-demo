@@ -1,4 +1,4 @@
 export declare class HelloController {
     constructor();
-    hello(): string;
+    hello(): Promise<string>;
 }

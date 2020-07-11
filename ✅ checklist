@@ -9,10 +9,11 @@ checklist
 ✅ fe can retrieve a jwt
 
 
-✅ (postman) be can receive request on a private route, and deny access if no authentication is supplied
-    ✅ (sub task) be can create private routes
-✅ (postman) be can receive request on a private route, and allow access if an authentication is supplied
-_ (postman) be can digest the JWT and give us information about the user
+✅ (postman) BE can receive request on a private route, and deny access if no authentication is supplied
+    ✅ (sub task) BE can create private routes
+✅ (postman) BE can receive request on a private route, and allow access if an authentication is supplied
+✅ (postman) BE can get information about a user using M2M requests
+
 
 
 

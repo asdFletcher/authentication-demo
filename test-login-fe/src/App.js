@@ -19,11 +19,14 @@ function App() {
   };
 
   const handleTest2 = async () => {
-    // fetch("http://localhost:5000/hello").then(function (response) {
-    //   return response.json();
-    // });
     let res = await Axios.get("http://localhost:5000/hello");
     console.log(res.data);
+  };
+  const GetJWTForMgmtAPI = async () => {
+    const token = await getTokenSilently({
+      audience: "https://auth0-test-auth.us.auth0.com/",
+    });
+    console.log("token: ", token);
   };
 
   return (
@@ -71,10 +74,10 @@ function App() {
                   Test
                 </button>
                 <button
-                  onClick={handleTest2}
+                  onClick={GetJWTForMgmtAPI}
                   className="button is-small is-dark"
                 >
-                  Test2
+                  GetJWTForMgmtAPI
                 </button>
               </>
             )}

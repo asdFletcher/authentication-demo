@@ -3,6 +3,8 @@ import {ApplicationConfig, Lb4Test1Application} from './application';
 export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
+  require('dotenv').config();
+
   const app = new Lb4Test1Application(options);
   await app.boot();
   await app.migrateSchema();
