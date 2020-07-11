@@ -31,10 +31,17 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
     return new Promise<UserProfile | undefined>((resolve, reject) => {
       this.jwtCheck(request, this.response, (err: unknown) => {
         if (err) {
+          console.log('error detected ‼️‼️‼️‼️‼️‼️‼️‼️');
           console.error(err);
           reject(err);
+
           return;
         }
+        console.log('this.metadata.options: ', this.metadata.options);
+        console.log(
+          'this.metadata.options?.scopes: ',
+          this.metadata.options?.scopes,
+        );
         // If the `@authenticate` requires `scopes` check
         if (this.metadata.options?.scopes) {
           jwtAuthz(this.metadata.options!.scopes, {failWithError: true})(
@@ -44,6 +51,7 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
               if (err2) {
                 console.error(err2);
                 reject(err2);
+
                 return;
               }
               // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,0 +1,18 @@
+checklist
+
+
+✅ fe is up and running
+✅ be is up and running
+✅ be is accepting public routes on 5000
+✅ fe can send public requests on button click to 5000 without rejection
+✅ fe can log in using auth 0 email and pw
+✅ fe can retrieve a jwt
+
+
+✅ (postman) be can receive request on a private route, and deny access if no authentication is supplied
+    ✅ (sub task) be can create private routes
+✅ (postman) be can receive request on a private route, and allow access if an authentication is supplied
+_ (postman) be can digest the JWT and give us information about the user
+
+
+

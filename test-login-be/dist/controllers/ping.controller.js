@@ -58,6 +58,8 @@ let PingController = class PingController {
         };
     }
     async greet(currentUserProfile) {
+        console.log('email', currentUserProfile.name);
+        console.log('test', currentUserProfile.email);
         // (@jannyHou)FIXME: explore a way to generate OpenAPI schema
         // for symbol property
         currentUserProfile.id = currentUserProfile[security_1.securityId];

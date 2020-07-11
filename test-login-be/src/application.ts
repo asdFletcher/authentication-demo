@@ -31,10 +31,12 @@ export class Lb4Test1Application extends BootMixin(
 
     // Register the Auth0 JWT authentication strategy
     registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
+
+    console.log(' ~~~~~ in application.ts ~~~~~~');
     this.configure(KEY).to({
-      jwksUri: 'https://apitoday.auth0.com/.well-known/jwks.json',
-      audience: 'http://localhost:3000/ping',
-      issuer: 'https://apitoday.auth0.com/',
+      jwksUri: 'https://auth0-test-auth.us.auth0.com/.well-known/jwks.json',
+      audience: 'http://localhost:5000',
+      issuer: 'https://auth0-test-auth.us.auth0.com/',
       algorithms: ['RS256'],
     });
 

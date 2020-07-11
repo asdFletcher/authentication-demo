@@ -17,14 +17,17 @@ let JWTAuthenticationStrategy = class JWTAuthenticationStrategy {
     async authenticate(request) {
         return new Promise((resolve, reject) => {
             this.jwtCheck(request, this.response, (err) => {
-                var _a;
+                var _a, _b;
                 if (err) {
+                    console.log('error detected ‼️‼️‼️‼️‼️‼️‼️‼️');
                     console.error(err);
                     reject(err);
                     return;
                 }
+                console.log('this.metadata.options: ', this.metadata.options);
+                console.log('this.metadata.options?.scopes: ', (_a = this.metadata.options) === null || _a === void 0 ? void 0 : _a.scopes);
                 // If the `@authenticate` requires `scopes` check
-                if ((_a = this.metadata.options) === null || _a === void 0 ? void 0 : _a.scopes) {
+                if ((_b = this.metadata.options) === null || _b === void 0 ? void 0 : _b.scopes) {
                     jwtAuthz(this.metadata.options.scopes, { failWithError: true })(request, this.response, (err2) => {
                         if (err2) {
                             console.error(err2);

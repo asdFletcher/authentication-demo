@@ -2,9 +2,29 @@ import React, { useContext } from "react";
 import "bulma/css/bulma.css";
 import { useAuth0 } from "./contexts/auth0-context";
 import Header from "./components/Header";
+import Axios from "axios";
 
 function App() {
-  const { isLoading, user, loginWithRedirect, logout } = useAuth0();
+  const {
+    isLoading,
+    user,
+    loginWithRedirect,
+    logout,
+    getTokenSilently,
+  } = useAuth0();
+
+  const handleTest = async () => {
+    const token = await getTokenSilently();
+    console.log("token: ", token);
+  };
+
+  const handleTest2 = async () => {
+    // fetch("http://localhost:5000/hello").then(function (response) {
+    //   return response.json();
+    // });
+    let res = await Axios.get("http://localhost:5000/hello");
+    console.log(res.data);
+  };
 
   return (
     <>
@@ -22,6 +42,12 @@ function App() {
                 >
                   Login
                 </button>
+                <button
+                  onClick={handleTest2}
+                  className="button is-small is-dark"
+                >
+                  Test3
+                </button>
               </>
             )}
             {!isLoading && user && (
@@ -37,6 +63,18 @@ function App() {
                   className="button is-small is-dark"
                 >
                   Logout
+                </button>
+                <button
+                  onClick={handleTest}
+                  className="button is-small is-dark"
+                >
+                  Test
+                </button>
+                <button
+                  onClick={handleTest2}
+                  className="button is-small is-dark"
+                >
+                  Test2
                 </button>
               </>
             )}

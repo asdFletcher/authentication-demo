@@ -78,6 +78,8 @@ export class PingController {
     @inject(SecurityBindings.USER)
     currentUserProfile: UserProfile,
   ): Promise<UserProfile> {
+    console.log('email', currentUserProfile.name);
+    console.log('test', currentUserProfile.email);
     // (@jannyHou)FIXME: explore a way to generate OpenAPI schema
     // for symbol property
     currentUserProfile.id = currentUserProfile[securityId];

@@ -7,7 +7,7 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 export const Auth0Context = createContext();
 
 // export the context as useAuth0
-export const useAuth0 = () => useContext(Auth0Context); // <-- new
+export const useAuth0 = () => useContext(Auth0Context);
 
 // create a provider
 export class Auth0Provider extends Component {
@@ -21,6 +21,8 @@ export class Auth0Provider extends Component {
     domain: process.env.REACT_APP_AUTH0_DOMAIN,
     client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
     redirect_uri: window.location.origin,
+    audience: "http://localhost:5000",
+    scope: "greet",
   };
 
   componentDidMount() {
@@ -30,6 +32,7 @@ export class Auth0Provider extends Component {
   // initialize the auth0 library
   initializeAuth0 = async () => {
     const auth0Client = await createAuth0Client(this.config);
+    console.log("auth0Client: ", auth0Client);
     this.setState({ auth0Client });
 
     // check to see if they have been redirected after login
